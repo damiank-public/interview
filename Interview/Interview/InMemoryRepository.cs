@@ -21,7 +21,7 @@ namespace Interview
 
         public void Save(T item)
         {
-            throw new NotImplementedException();
+            _storage.Add(item.Id, item);
         }
 
         public T Get(I id)

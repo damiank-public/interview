@@ -103,6 +103,23 @@ namespace Interview.Tests
             Assert.That(() => inMemoryRepository.Get(null), Throws.ArgumentNullException.With.Message.Contains("id cannot be null"));
         }
 
+        [Test]
+        public void Save_AddsItemToStorage()
+        {
+            var items = new Dictionary<int, IStoreable<int>>
+            {
+                [1] = new TestStoreable<int> { Id = 1, Value = "First test storeable" },
+                [2] = new TestStoreable<int> { Id = 2, Value = "Second test storeable" },
+                [3] = new TestStoreable<int> { Id = 3, Value = "Third test storeable" }
+            };
+            var inMemoryRepository = new InMemoryRepository<IStoreable<int>, int>(items);
+
+            var newItem = new TestStoreable<int> { Id = 4, Value = "Fourth test storeable" };
+            inMemoryRepository.Save(newItem);
+
+            Assert.That(items[4], Is.EqualTo(newItem));
+        }
+
         private class TestStoreable<T> : IStoreable<T>
         {
             public T Id { get; set; }
