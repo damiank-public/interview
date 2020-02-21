@@ -1,0 +1,6 @@
+﻿namespace Interview
+{
+    class InMemoryRepository
+    {
+    }
+}
