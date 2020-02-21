@@ -13,6 +13,12 @@ namespace Interview.Tests
         }
 
         [Test]
+        public void ctor_ThrowsArgumentNullExceptionIfParameterIsNull()
+        {
+            Assert.That(() => new InMemoryRepository<IStoreable<int>, int>(null), Throws.ArgumentNullException);
+        }
+
+        [Test]
         public void GetAll_InitiallyReturnsNoItems()
         {
             var inMemoryRepository = new InMemoryRepository<IStoreable<int>, int>(new Dictionary<int, IStoreable<int>>());

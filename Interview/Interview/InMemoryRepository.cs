@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Interview
@@ -9,6 +10,8 @@ namespace Interview
 
         public InMemoryRepository(Dictionary<I, T> items)
         {
+            if (items is null) throw new ArgumentNullException(nameof(items));
+
             _items = items;
         }
 
