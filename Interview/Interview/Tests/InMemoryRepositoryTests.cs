@@ -181,6 +181,15 @@ namespace Interview.Tests
             Assert.That(() => inMemoryRepository.Delete(4), Throws.InstanceOf<ItemNotFoundException>());
         }
 
+        [Test]
+        public void Delete_ThrowsArgumentNullExceptionIfIdIsNull()
+        {
+            var storage = new Dictionary<int?, IStoreable<int?>>();
+            var inMemoryRepository = new InMemoryRepository<IStoreable<int?>, int?>(storage);
+
+            Assert.That(() => inMemoryRepository.Delete(null), Throws.ArgumentNullException.With.Message.Contains("id cannot be null"));
+        }
+
         private class TestStoreable<T> : IStoreable<T>
         {
             public T Id { get; set; }
