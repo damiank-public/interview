@@ -21,6 +21,8 @@ namespace Interview
 
         public void Save(T item)
         {
+            if (item == null) throw new ArgumentNullException(nameof(item));
+
             _storage.Add(item.Id, item);
         }
 

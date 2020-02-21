@@ -120,6 +120,20 @@ namespace Interview.Tests
             Assert.That(storage[4], Is.EqualTo(newItem));
         }
 
+        [Test]
+        public void Save_ThrowsArgumentNullExceptionIfItemIsNull()
+        {
+            var storage = new Dictionary<int, IStoreable<int>>
+            {
+                [1] = new TestStoreable<int> { Id = 1, Value = "First test storeable" },
+                [2] = new TestStoreable<int> { Id = 2, Value = "Second test storeable" },
+                [3] = new TestStoreable<int> { Id = 3, Value = "Third test storeable" }
+            };
+            var inMemoryRepository = new InMemoryRepository<IStoreable<int>, int>(storage);
+
+            Assert.That(() => inMemoryRepository.Save(null), Throws.ArgumentNullException);
+        }
+
         private class TestStoreable<T> : IStoreable<T>
         {
             public T Id { get; set; }
