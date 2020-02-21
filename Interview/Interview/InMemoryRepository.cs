@@ -16,8 +16,7 @@ namespace Interview
 
         public void Delete(I id)
         {
-            if (id == null) throw new ArgumentNullException(nameof(id), $"{nameof(id)} cannot be null");
-            if (!_storage.ContainsKey(id)) throw new ItemNotFoundException();
+            ValidateId(id);
 
             _storage.Remove(id);
         }
@@ -31,8 +30,7 @@ namespace Interview
 
         public T Get(I id)
         {
-            if (id == null) throw new ArgumentNullException(nameof(id), $"{nameof(id)} cannot be null");
-            if (!_storage.ContainsKey(id)) throw new ItemNotFoundException();
+            ValidateId(id);
 
             return _storage[id];
         }
@@ -41,5 +39,18 @@ namespace Interview
         {
             return _storage.Values;
         }
+
+        private void ValidateId(I id)
+        {
+            if (id == null)
+            {
+                throw new ArgumentNullException(nameof(id), $"{nameof(id)} cannot be null");
+            }
+            if (!_storage.ContainsKey(id))
+            {
+                throw new ItemNotFoundException();
+            }
+        }
+
     }
 }
