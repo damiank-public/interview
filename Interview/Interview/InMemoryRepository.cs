@@ -23,7 +23,7 @@ namespace Interview
         {
             if (item == null) throw new ArgumentNullException(nameof(item));
 
-            _storage.Add(item.Id, item);
+            _storage[item.Id] = item;
         }
 
         public T Get(I id)

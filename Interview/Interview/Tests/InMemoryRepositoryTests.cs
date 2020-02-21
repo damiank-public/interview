@@ -134,6 +134,23 @@ namespace Interview.Tests
             Assert.That(() => inMemoryRepository.Save(null), Throws.ArgumentNullException);
         }
 
+        [Test]
+        public void Save_UpdatesExistingItemIfAlreadyInStorage()
+        {
+            var storage = new Dictionary<int, IStoreable<int>>
+            {
+                [1] = new TestStoreable<int> { Id = 1, Value = "First test storeable" },
+                [2] = new TestStoreable<int> { Id = 2, Value = "Second test storeable" },
+                [3] = new TestStoreable<int> { Id = 3, Value = "Third test storeable" }
+            };
+            var inMemoryRepository = new InMemoryRepository<IStoreable<int>, int>(storage);
+
+            var newItem = new TestStoreable<int> { Id = 2, Value = "Updated second test storeable" };
+            inMemoryRepository.Save(newItem);
+
+            Assert.That(storage[2], Is.EqualTo(newItem));
+        }
+
         private class TestStoreable<T> : IStoreable<T>
         {
             public T Id { get; set; }
