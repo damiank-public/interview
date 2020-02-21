@@ -16,6 +16,8 @@ namespace Interview
 
         public void Delete(I id)
         {
+            if (!_storage.ContainsKey(id)) throw new ItemNotFoundException();
+
             _storage.Remove(id);
         }
 

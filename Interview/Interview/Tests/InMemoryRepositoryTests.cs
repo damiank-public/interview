@@ -167,6 +167,20 @@ namespace Interview.Tests
             Assert.That(storage, Does.Not.ContainKey(2));
         }
 
+        [Test]
+        public void Delete_ThrowsItemNotFoundExceptionIfIdDoesNotMatch()
+        {
+            var storage = new Dictionary<int, IStoreable<int>>
+            {
+                [1] = new TestStoreable<int> { Id = 1, Value = "First test storeable" },
+                [2] = new TestStoreable<int> { Id = 2, Value = "Second test storeable" },
+                [3] = new TestStoreable<int> { Id = 3, Value = "Third test storeable" }
+            };
+            var inMemoryRepository = new InMemoryRepository<IStoreable<int>, int>(storage);
+
+            Assert.That(() => inMemoryRepository.Delete(4), Throws.InstanceOf<ItemNotFoundException>());
+        }
+
         private class TestStoreable<T> : IStoreable<T>
         {
             public T Id { get; set; }
