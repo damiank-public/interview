@@ -1,38 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Interview
 {
     class InMemoryRepository<T, I> : IRepository<T, I> where T : IStoreable<I>
     {
-        private Dictionary<I, T> _items;
+        private readonly Dictionary<I, T> _storage;
 
-        public InMemoryRepository(Dictionary<I, T> items)
+        public InMemoryRepository(Dictionary<I, T> storage)
         {
-            if (items is null) throw new ArgumentNullException(nameof(items));
+            if (storage is null) throw new ArgumentNullException(nameof(storage));
 
-            _items = items;
+            _storage = storage;
         }
 
         public void Delete(I id)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public void Save(T item)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public T Get(I id)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public IEnumerable<T> GetAll()
         {
-            return _items.Values;
+            return _storage.Values;
         }
     }
 }
