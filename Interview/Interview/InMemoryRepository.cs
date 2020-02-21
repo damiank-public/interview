@@ -26,7 +26,7 @@ namespace Interview
 
         public T Get(I id)
         {
-            throw new NotImplementedException();
+            return _storage[id];
         }
 
         public IEnumerable<T> GetAll()
