@@ -26,6 +26,8 @@ namespace Interview
 
         public T Get(I id)
         {
+            if (!_storage.ContainsKey(id)) throw new ItemNotFoundException();
+
             return _storage[id];
         }
 
@@ -33,5 +35,9 @@ namespace Interview
         {
             return _storage.Values;
         }
+    }
+
+    class ItemNotFoundException : Exception
+    {
     }
 }
