@@ -26,6 +26,7 @@ namespace Interview
 
         public T Get(I id)
         {
+            if (id == null) throw new ArgumentNullException(nameof(id), $"{nameof(id)} cannot be null");
             if (!_storage.ContainsKey(id)) throw new ItemNotFoundException();
 
             return _storage[id];

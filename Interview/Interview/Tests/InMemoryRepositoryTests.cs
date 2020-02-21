@@ -64,7 +64,7 @@ namespace Interview.Tests
         }
 
         [Test]
-        public void Get_ReturnsItemNotFoundExceptionIfNoMatch()
+        public void Get_ThrowsItemNotFoundExceptionIfNoMatch()
         {
             var items = new Dictionary<int, IStoreable<int>>
             {
@@ -75,6 +75,15 @@ namespace Interview.Tests
             var inMemoryRepository = new InMemoryRepository<IStoreable<int>, int>(items);
 
             Assert.That(() => inMemoryRepository.Get(4), Throws.InstanceOf<ItemNotFoundException>());
+        }
+
+        [Test]
+        public void Get_ThrowsArgumentNullExceptionIfIdIsNull()
+        {
+            var items = new Dictionary<int?, IStoreable<int?>>();
+            var inMemoryRepository = new InMemoryRepository<IStoreable<int?>, int?>(items);
+
+            Assert.That(() => inMemoryRepository.Get(null), Throws.ArgumentNullException.With.Message.Contains("id cannot be null"));
         }
 
         private class TestStoreable : IStoreable<int>
