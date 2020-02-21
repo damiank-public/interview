@@ -71,6 +71,7 @@
     <Compile Include="InMemoryRepository.cs" />
     <Compile Include="IRepository.cs" />
     <Compile Include="IStoreable.cs" />
+    <Compile Include="ItemNotFoundException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tests\InMemoryRepositoryTests.cs" />
   </ItemGroup>

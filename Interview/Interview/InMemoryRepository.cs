@@ -37,8 +37,4 @@ namespace Interview
             return _storage.Values;
         }
     }
-
-    class ItemNotFoundException : Exception
-    {
-    }
 }
