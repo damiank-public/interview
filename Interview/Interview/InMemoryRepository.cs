@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Interview
 {
-    class InMemoryRepository<T, I> : IRepository<T, I> where T : IStoreable<I>
+    internal class InMemoryRepository<T, I> : IRepository<T, I> where T : IStoreable<I>
     {
         private readonly IDictionary<I, T> _storage;
 

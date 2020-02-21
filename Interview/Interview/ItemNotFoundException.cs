@@ -2,7 +2,7 @@
 
 namespace Interview
 {
-    class ItemNotFoundException : Exception
+    internal class ItemNotFoundException : Exception
     {
     }
 }
