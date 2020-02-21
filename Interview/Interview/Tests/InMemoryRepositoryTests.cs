@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 
 namespace Interview.Tests
@@ -33,18 +34,18 @@ namespace Interview.Tests
         {
             var items = new Dictionary<int, IStoreable<int>>
             {
-                [1] = new TestStoreable { Id = 1 },
-                [2] = new TestStoreable { Id = 2 },
-                [3] = new TestStoreable { Id = 3 }
+                [1] = new TestStoreable<int> { Id = 1, Value = "First test storeable" },
+                [2] = new TestStoreable<int> { Id = 2, Value = "Second test storeable" },
+                [3] = new TestStoreable<int> { Id = 3, Value = "Third test storeable" }
             };
             var inMemoryRepository = new InMemoryRepository<IStoreable<int>, int>(items);
 
             var actual = inMemoryRepository.GetAll();
 
             Assert.That(actual, Has.Exactly(3).Items);
-            Assert.That(actual, Has.One.Items.Matches<IStoreable<int>>(x => x.Id == 1));
-            Assert.That(actual, Has.One.Items.Matches<IStoreable<int>>(x => x.Id == 2));
-            Assert.That(actual, Has.One.Items.Matches<IStoreable<int>>(x => x.Id == 3));
+            Assert.That(actual, Has.One.Items.Matches<TestStoreable<int>>(x => x.Value == "First test storeable"));
+            Assert.That(actual, Has.One.Items.Matches<TestStoreable<int>>(x => x.Value == "Second test storeable"));
+            Assert.That(actual, Has.One.Items.Matches<TestStoreable<int>>(x => x.Value == "Third test storeable"));
         }
 
         [Test]
@@ -52,15 +53,31 @@ namespace Interview.Tests
         {
             var items = new Dictionary<int, IStoreable<int>>
             {
-                [1] = new TestStoreable { Id = 1 },
-                [2] = new TestStoreable { Id = 2 },
-                [3] = new TestStoreable { Id = 3 }
+                [1] = new TestStoreable<int> { Id = 1, Value = "First test storeable" },
+                [2] = new TestStoreable<int> { Id = 2, Value = "Second test storeable" },
+                [3] = new TestStoreable<int> { Id = 3, Value = "Third test storeable" }
             };
             var inMemoryRepository = new InMemoryRepository<IStoreable<int>, int>(items);
 
-            var actual = inMemoryRepository.Get(2);
+            var actual = inMemoryRepository.Get(2) as TestStoreable<int>;
 
-            Assert.That(actual.Id, Is.EqualTo(2));
+            Assert.That(actual.Value, Is.EqualTo("Second test storeable"));
+        }
+
+        [Test]
+        public void Get_ReturnsMatchedItemForReferenceTypeId()
+        {
+            var items = new Dictionary<TestReferenceTypeId, IStoreable<TestReferenceTypeId>>
+            {
+                [new TestReferenceTypeId(1)] = new TestStoreable<TestReferenceTypeId> { Id = new TestReferenceTypeId(1), Value = "First test storeable" },
+                [new TestReferenceTypeId(2)] = new TestStoreable<TestReferenceTypeId> { Id = new TestReferenceTypeId(2), Value = "Second test storeable" },
+                [new TestReferenceTypeId(3)] = new TestStoreable<TestReferenceTypeId> { Id = new TestReferenceTypeId(3), Value = "Third test storeable" }
+            };
+            var inMemoryRepository = new InMemoryRepository<IStoreable<TestReferenceTypeId>, TestReferenceTypeId>(items);
+
+            var actual = inMemoryRepository.Get(new TestReferenceTypeId(2)) as TestStoreable<TestReferenceTypeId>;
+
+            Assert.That(actual.Value, Is.EqualTo("Second test storeable"));
         }
 
         [Test]
@@ -68,9 +85,9 @@ namespace Interview.Tests
         {
             var items = new Dictionary<int, IStoreable<int>>
             {
-                [1] = new TestStoreable { Id = 1 },
-                [2] = new TestStoreable { Id = 2 },
-                [3] = new TestStoreable { Id = 3 }
+                [1] = new TestStoreable<int> { Id = 1, Value = "First test storeable" },
+                [2] = new TestStoreable<int> { Id = 2, Value = "Second test storeable" },
+                [3] = new TestStoreable<int> { Id = 3, Value = "Third test storeable" }
             };
             var inMemoryRepository = new InMemoryRepository<IStoreable<int>, int>(items);
 
@@ -86,9 +103,31 @@ namespace Interview.Tests
             Assert.That(() => inMemoryRepository.Get(null), Throws.ArgumentNullException.With.Message.Contains("id cannot be null"));
         }
 
-        private class TestStoreable : IStoreable<int>
+        private class TestStoreable<T> : IStoreable<T>
         {
-            public int Id { get; set; }
+            public T Id { get; set; }
+            public string Value { get; set; }
+        }
+
+        private class TestReferenceTypeId
+        {
+            private readonly int _id;
+
+            public TestReferenceTypeId(int id)
+            {
+                _id = id;
+            }
+
+            public override bool Equals(object obj)
+            {
+                return obj is TestReferenceTypeId key &&
+                       _id == key._id;
+            }
+
+            public override int GetHashCode()
+            {
+                return 1969571243 + _id.GetHashCode();
+            }
         }
     }
 }
