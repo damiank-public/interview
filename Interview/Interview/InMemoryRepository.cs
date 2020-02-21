@@ -5,9 +5,9 @@ namespace Interview
 {
     class InMemoryRepository<T, I> : IRepository<T, I> where T : IStoreable<I>
     {
-        private readonly Dictionary<I, T> _storage;
+        private readonly IDictionary<I, T> _storage;
 
-        public InMemoryRepository(Dictionary<I, T> storage)
+        public InMemoryRepository(IDictionary<I, T> storage)
         {
             if (storage is null) throw new ArgumentNullException(nameof(storage));
 
