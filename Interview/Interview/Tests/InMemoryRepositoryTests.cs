@@ -151,6 +151,22 @@ namespace Interview.Tests
             Assert.That(storage[2], Is.EqualTo(newItem));
         }
 
+        [Test]
+        public void Delete_RemovesItemIfIdMatches()
+        {
+            var storage = new Dictionary<int, IStoreable<int>>
+            {
+                [1] = new TestStoreable<int> { Id = 1, Value = "First test storeable" },
+                [2] = new TestStoreable<int> { Id = 2, Value = "Second test storeable" },
+                [3] = new TestStoreable<int> { Id = 3, Value = "Third test storeable" }
+            };
+            var inMemoryRepository = new InMemoryRepository<IStoreable<int>, int>(storage);
+
+            inMemoryRepository.Delete(2);
+
+            Assert.That(storage, Does.Not.ContainKey(2));
+        }
+
         private class TestStoreable<T> : IStoreable<T>
         {
             public T Id { get; set; }

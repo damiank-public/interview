@@ -16,7 +16,7 @@ namespace Interview
 
         public void Delete(I id)
         {
-            throw new NotImplementedException();
+            _storage.Remove(id);
         }
 
         public void Save(T item)
