@@ -8,7 +8,8 @@ namespace Interview.Tests
         [Test]
         public void CanConstruct()
         {
-            var inMemoryRepository = new InMemoryRepository();
+            var inMemoryRepository = new InMemoryRepository<IStoreable<int>, int>();
         }
+
     }
 }
