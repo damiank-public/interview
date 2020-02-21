@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using System.Collections.Generic;
 
 namespace Interview.Tests
 {
@@ -8,18 +9,39 @@ namespace Interview.Tests
         [Test]
         public void CanConstruct()
         {
-            var inMemoryRepository = new InMemoryRepository<IStoreable<int>, int>();
+            var inMemoryRepository = new InMemoryRepository<IStoreable<int>, int>(new Dictionary<int, IStoreable<int>>());
         }
 
         [Test]
         public void GetAll_InitiallyReturnsNoItems()
         {
-            var inMemoryRepository = new InMemoryRepository<IStoreable<int>, int>();
+            var inMemoryRepository = new InMemoryRepository<IStoreable<int>, int>(new Dictionary<int, IStoreable<int>>());
 
             var actual = inMemoryRepository.GetAll();
 
             Assert.That(actual, Is.Empty);
         }
 
+        [Test]
+        public void GetAll_ReturnsAllItems()
+        {
+            var items = new Dictionary<int, IStoreable<int>>();
+            items[1] = new TestStoreable { Id = 1 };
+            items[2] = new TestStoreable { Id = 2 };
+            items[3] = new TestStoreable { Id = 3 };
+            var inMemoryRepository = new InMemoryRepository<IStoreable<int>, int>(items);
+
+            var actual = inMemoryRepository.GetAll();
+
+            Assert.That(actual, Has.Exactly(3).Items);
+            Assert.That(actual, Has.One.Items.Matches<IStoreable<int>>(x => x.Id == 1));
+            Assert.That(actual, Has.One.Items.Matches<IStoreable<int>>(x => x.Id == 2));
+            Assert.That(actual, Has.One.Items.Matches<IStoreable<int>>(x => x.Id == 3));
+        }
+
+        private class TestStoreable : IStoreable<int>
+        {
+            public int Id { get; set; }
+        }
     }
 }
