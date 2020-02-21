@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Interview
 {
@@ -21,7 +22,7 @@ namespace Interview
 
         public IEnumerable<T> GetAll()
         {
-            throw new System.NotImplementedException();
+            return Enumerable.Empty<T>();
         }
     }
 }

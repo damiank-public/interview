@@ -11,5 +11,15 @@ namespace Interview.Tests
             var inMemoryRepository = new InMemoryRepository<IStoreable<int>, int>();
         }
 
+        [Test]
+        public void GetAll_InitiallyReturnsNoItems()
+        {
+            var inMemoryRepository = new InMemoryRepository<IStoreable<int>, int>();
+
+            var actual = inMemoryRepository.GetAll();
+
+            Assert.That(actual, Is.Empty);
+        }
+
     }
 }
